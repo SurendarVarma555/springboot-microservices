@@ -1,7 +1,9 @@
 package com.dailycodebuffer.app.controller;
 
 import com.dailycodebuffer.app.entity.User;
-import com.dailycodebuffer.app.payload.UserVo;
+import com.dailycodebuffer.app.mapper.UserMapper;
+import com.dailycodebuffer.app.payload.ResponseDto;
+import com.dailycodebuffer.app.payload.UserDto;
 import com.dailycodebuffer.app.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,15 +18,16 @@ public class UserController {
     private UserService userService;
 
     @PostMapping
-    public ResponseEntity<User> saveUser (@RequestBody User user){
-        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
-
+    public ResponseEntity<UserDto> createUser(@RequestBody UserDto userDto){
+        return new ResponseEntity<>(userService.saveUser(userDto),HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserVo> getUserWithDepartmentById (@PathVariable("id") Long userId){
-
-        return new ResponseEntity<>(userService.getUserWithDepartmentById(userId), HttpStatus.OK);
-
+    public ResponseEntity<ResponseDto> getUserWithDepartment(@PathVariable("id") Long userId){
+        return new ResponseEntity<>(userService.getUserWithDepartmentById(userId),HttpStatus.OK);
     }
+
+
+
+
 }

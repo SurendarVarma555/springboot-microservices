@@ -1,55 +1,49 @@
 package com.dailycodebuffer.app.service.impl;
 
 import com.dailycodebuffer.app.entity.User;
-import com.dailycodebuffer.app.feignConfig.DepartmentFeign;
-import com.dailycodebuffer.app.payload.Department;
-import com.dailycodebuffer.app.payload.UserVo;
+import com.dailycodebuffer.app.mapper.UserMapper;
+import com.dailycodebuffer.app.payload.DepartmentDto;
+import com.dailycodebuffer.app.payload.ResponseDto;
+import com.dailycodebuffer.app.payload.UserDto;
 import com.dailycodebuffer.app.repository.UserRepository;
 import com.dailycodebuffer.app.service.UserService;
-import com.google.gson.Gson;
-import feign.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.Reader;
+import org.springframework.web.client.RestTemplate;
 
 @Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
     private UserRepository userRepository;
+
     @Autowired
-    private DepartmentFeign departmentFeign;
+    private RestTemplate restTemplate;
+
 
     @Override
-    public User saveUser (User user){
-
-        return userRepository.save(user);
+    public UserDto saveUser (UserDto userDto){
+        User user = UserMapper.mapToUser(userDto);
+        User savedUser = userRepository.save(user);
+        return UserMapper.mapToUserDto(savedUser);
     }
 
-
     @Override
-    public UserVo getUserWithDepartmentById (Long userId){
+    public ResponseDto getUserWithDepartmentById (Long userId){
 
-        User foundUser = userRepository.findById(userId)
-                .orElseThrow(() -> new RuntimeException("User does not exists"));
-        Response response = departmentFeign.getDepartmentById(foundUser.getDepartmentId());
-        Department department = null;
-        try (Reader reader = new InputStreamReader(response.body().asInputStream())) {
-            Gson gson = new Gson();
-            department = gson.fromJson(reader, Department.class);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ResponseDto responseDto = new ResponseDto();
 
+        User user = userRepository.findById(userId).get();
+        UserDto userDto = UserMapper.mapToUserDto(user);
 
-        UserVo vo = new UserVo();
+        ResponseEntity<DepartmentDto> responseEntity = restTemplate.getForEntity("http://DEPARTMENT-SERVICE/api/departments/" + user.getDepartmentId(), DepartmentDto.class);
+        DepartmentDto departmentDto = responseEntity.getBody();
+        System.out.println(responseEntity.getStatusCode());
 
-        vo.setUser(foundUser);
-        vo.setDepartment(department);
+        responseDto.setUser(userDto);
+        responseDto.setDepartment(departmentDto);
 
-        return vo;
+        return responseDto;
     }
 }

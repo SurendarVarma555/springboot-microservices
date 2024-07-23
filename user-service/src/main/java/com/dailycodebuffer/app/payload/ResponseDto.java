@@ -1,6 +1,5 @@
 package com.dailycodebuffer.app.payload;
 
-import com.dailycodebuffer.app.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -10,9 +9,9 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserVo {
+public class ResponseDto {
 
-    private User user;
-    private Department department;
+    private UserDto user;
+    private DepartmentDto department;
 
 }
