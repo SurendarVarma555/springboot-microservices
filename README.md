@@ -15,3 +15,6 @@ http://localhost:8585/api/users/1
         "departmentCode": "HR-123"
     }
 }
+
+![image](https://github.com/user-attachments/assets/ec9fb084-9815-4f0c-b117-fdb8602bc613)
+
