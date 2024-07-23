@@ -47,12 +47,9 @@ public class UserServiceImpl implements UserService {
 
         UserVo vo = new UserVo();
 
-        vo.setUserId(foundUser.getUserId());
-        vo.setUserName(foundUser.getUserName());
+        vo.setUser(foundUser);
+        vo.setDepartment(department);
 
-        vo.setDepartmentName(department.getDepartmentName());
-        vo.setDepartmentCode(department.getDepartmentCode());
-        vo.setDepartmentAddress(department.getDepartmentAddress());
         return vo;
     }
 }
