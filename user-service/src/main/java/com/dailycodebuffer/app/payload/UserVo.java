@@ -1,15 +1,16 @@
 package com.dailycodebuffer.app.payload;
 
-import lombok.*;
+import lombok.Getter;
+import lombok.Setter;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
-public class Department {
-    private Long departmentId;
+public class UserVo {
+
+    private Long userId;
+    private String userName;
     private String departmentName;
     private String departmentAddress;
     private String departmentCode;
+
 }
