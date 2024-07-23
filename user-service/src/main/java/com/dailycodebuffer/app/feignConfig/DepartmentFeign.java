@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 
 
-@FeignClient(url = "http://localhost:DEPARTMENT-SERVICE", value = "department-feign-client", path = "/api/departments")
+@FeignClient(url = "http://DEPARTMENT-SERVICE", value = "department-feign-client", path = "/api/departments")
 public interface DepartmentFeign {
 
     @GetMapping("/{id}")
